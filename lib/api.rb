@@ -1,0 +1,30 @@
+require 'httparty'
+
+class API
+  attr_reader :base_url, :params
+
+  def initialize
+    @base_url = "https://driftrock-dev-test.herokuapp.com/"
+    @params = "?per_page=100&page="
+  end
+
+  def fetch_all_data(end_point)
+    raise 'API is not working' unless status_correct?
+    path = base_url + end_point + params
+    Enumerator.new do |y|
+       current_page = 1
+       loop do
+         results = HTTParty.get(path + current_page.to_s)['data']
+         break if results.empty?
+         results.map { |item| y << item }
+         current_page += 1
+       end
+    end
+  end
+
+
+  def status_correct?
+    HTTParty.get(@base_url + "status").code == 200
+  end
+
+end
