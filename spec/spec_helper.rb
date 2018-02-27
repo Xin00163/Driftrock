@@ -1,4 +1,5 @@
 require 'webmock/rspec'
+WebMock.disable_net_connect!(allow_localhost: true)
 require 'simplecov'
 require 'simplecov-console'
 

@@ -11,20 +11,21 @@ class API
   def fetch_all_data(end_point)
     raise 'API is not working' unless status_correct?
     path = base_url + end_point + params
-    Enumerator.new do |y|
-       current_page = 1
-       loop do
-         results = HTTParty.get(path + current_page.to_s)['data']
-         break if results.empty?
-         results.map { |item| y << item }
-         current_page += 1
-       end
+    current_page = 1
+    results = []
+    loop do
+      response = HTTParty.get(path + current_page.to_s)
+      break if response.empty?
+      results << response['data']
+      current_page += 1
     end
+    results
   end
-
 
   def status_correct?
     HTTParty.get(@base_url + "status").code == 200
   end
+
+
 
 end
