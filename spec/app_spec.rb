@@ -1,7 +1,6 @@
 require 'httparty'
 require 'app'
 
-
 describe App do
   let (:api) { double :api }
   let (:app) { double :app }
@@ -26,8 +25,12 @@ describe App do
       "item":"Enormous Linen Plate",
       "spend":"87.16"
     },
+    {"user_id":"KABG-1H35-2IH8-JXYN",
+      "item":"Enormous Linen Plate",
+      "spend":"87.16"
+    },
     {
-      "user_id":"KZHR-1H35-2IH8-JXYN",
+      "user_id":"KZHR-2H37-2IH8-JXXN",
       "item":"Incredible Silk Bottle",
       "spend":"46.13"
     }
@@ -38,20 +41,31 @@ describe App do
       allow(api).to receive(:fetch_all_data).and_return(mocked_users)
       allow(api).to receive(:fetch_all_data).and_return(mocked_purchases)
     end
+    users_url = "https://driftrock-dev-test.herokuapp.com/users?per_page=100&page=1"
+    purchases_url = "https://driftrock-dev-test.herokuapp.com/purchases?per_page=100&page=1"
 
     it 'return the user\'s total spend' do
       stub_request(:get, "https://driftrock-dev-test.herokuapp.com/status").
            to_return(status: 200, body: "", headers: {})
-      stub_request(:get, "https://driftrock-dev-test.herokuapp.com/users?page=1&per_page=100").
+
+      stub_request(:get, users_url).
            to_return(status: 200, body: {data: mocked_users}.to_json, headers: {
               "Content-Type": "application/json"
              })
-      stub_request(:get, "https://driftrock-dev-test.herokuapp.com/purchases?page=1&per_page=100").
-          to_return(status: 200, body: {data: mocked_users}.to_json, headers: {
+      stub_request(:get, purchases_url).
+          to_return(status: 200, body: {data: mocked_purchases}.to_json, headers: {
              "Content-Type": "application/json"
             })
       expect(subject.total_spend('schimmel_quincy@ernser.io')).to eq(87.16)
     end
 
+    it 'return the most sold item' do
+      stub_request(:get, purchases_url).
+          to_return(status: 200, body: {data: mocked_purchases}.to_json, headers: {
+             "Content-Type": "application/json"
+            })
+      expect(subject.most_sold).to eq("Enormous Linen Plate")
+
+    end
   end
 end

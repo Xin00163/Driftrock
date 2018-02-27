@@ -16,7 +16,7 @@ class API
     loop do
       response = HTTParty.get(path + current_page.to_s)
       break if response.empty?
-      results << response['data']
+      results.concat(response['data'])
       current_page += 1
     end
     results
