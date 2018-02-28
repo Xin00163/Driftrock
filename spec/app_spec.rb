@@ -13,7 +13,7 @@ describe App do
       "email":"schimmel_quincy@ernser.io"
     },
     {
-      "id":"S27G-8UMJ-LDSL-UOPN",
+      "id":"KZHR-2H37-2IH8-JXXN",
       "first_name":"Henry",
       "last_name":"Terry",
       "phone":"636-387-6074 x690",
@@ -33,6 +33,11 @@ describe App do
       "user_id":"KZHR-2H37-2IH8-JXXN",
       "item":"Incredible Silk Bottle",
       "spend":"46.13"
+    },
+    {
+      "user_id":"KZHR-2H37-2IH8-JXXN",
+      "item":"something",
+      "spend":"46.13"
     }
   ]
 
@@ -51,7 +56,7 @@ describe App do
            to_return(status: 200, body: {data: mocked_users}.to_json, headers: {
               "Content-Type": "application/json"
              })
-     stub_request(:get, users_url_page_2).
+      stub_request(:get, users_url_page_2).
           to_return(status: 200, body: {}.to_json, headers: {
              "Content-Type": "application/json"
             })
@@ -72,7 +77,10 @@ describe App do
 
     it 'return the most sold item' do
       expect(subject.most_sold).to eq("Enormous Linen Plate")
+    end
 
+    it 'return the most loyal customer' do
+      expect(subject.most_loyal).to eq("terry_henry@doyle.io")
     end
   end
 end
