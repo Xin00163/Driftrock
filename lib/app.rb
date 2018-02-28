@@ -4,7 +4,7 @@ class App
 
   attr_reader :user_data, :api
 
-  def initialize(api= API.new)
+  def initialize(api: API.new)
     @user_data = api.fetch_all_data("users")
     @purchase_data = api.fetch_all_data("purchases")
   end
@@ -19,7 +19,7 @@ class App
 
   def item_popularity
     popularity = Hash.new(0)
-    @purchases_data.each { |purchases| popularity[purchases['item']] += 1 }
+    @purchase_data.each { |purchases| popularity[purchases['item']] += 1 }
     popularity
   end
 

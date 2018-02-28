@@ -37,33 +37,40 @@ describe App do
   ]
 
   describe "User data" do
+    users_url_page_1 = "https://driftrock-dev-test.herokuapp.com/users?per_page=100&page=1"
+    users_url_page_2 = "https://driftrock-dev-test.herokuapp.com/users?per_page=100&page=2"
+    purchases_url_page_1 = "https://driftrock-dev-test.herokuapp.com/purchases?per_page=100&page=1"
+    purchases_url_page_2 = "https://driftrock-dev-test.herokuapp.com/purchases?per_page=100&page=2"
     before do
       allow(api).to receive(:fetch_all_data).and_return(mocked_users)
       allow(api).to receive(:fetch_all_data).and_return(mocked_purchases)
-    end
-    users_url = "https://driftrock-dev-test.herokuapp.com/users?per_page=100&page=1"
-    purchases_url = "https://driftrock-dev-test.herokuapp.com/purchases?per_page=100&page=1"
-
-    it 'return the user\'s total spend' do
       stub_request(:get, "https://driftrock-dev-test.herokuapp.com/status").
            to_return(status: 200, body: "", headers: {})
 
-      stub_request(:get, users_url).
+      stub_request(:get, users_url_page_1).
            to_return(status: 200, body: {data: mocked_users}.to_json, headers: {
               "Content-Type": "application/json"
              })
-      stub_request(:get, purchases_url).
+     stub_request(:get, users_url_page_2).
+          to_return(status: 200, body: {}.to_json, headers: {
+             "Content-Type": "application/json"
+            })
+      stub_request(:get, purchases_url_page_1).
           to_return(status: 200, body: {data: mocked_purchases}.to_json, headers: {
              "Content-Type": "application/json"
             })
+      stub_request(:get, purchases_url_page_2).
+          to_return(status: 200, body: {}.to_json, headers: {
+             "Content-Type": "application/json"
+            })
+    end
+
+
+    it 'return the user\'s total spend' do
       expect(subject.total_spend('schimmel_quincy@ernser.io')).to eq(87.16)
     end
 
     it 'return the most sold item' do
-      stub_request(:get, purchases_url).
-          to_return(status: 200, body: {data: mocked_purchases}.to_json, headers: {
-             "Content-Type": "application/json"
-            })
       expect(subject.most_sold).to eq("Enormous Linen Plate")
 
     end
