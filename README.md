@@ -14,28 +14,16 @@ Create a script that can be run from the command line and can answer the questio
 
 ### To run the app
 
-```
-ruby app.rb COMMAND PARAMETERS
-```
-The script should implement these commands:
-most_sold: What is the name of the most sold item?
-total_spend [EMAIL]: What is the total spend of the user with this email address
-[EMAIL]?
-most_loyal: What is the email address of the most loyal user (most purchases)?
-e.g.
-```
-$ ruby app.rb total_spend drift.rock@email.com
-22.98
-$ ruby app.rb most_loyal
-drift.rock@email.com
-```
+- require `app.rb` through IRB.
+- Instantiate API and App.
+- Call the command methods: most_sold, total_spend [EMAIL], most_loyal
 
 ### To test
 - Run `rspec` to make sure all tests are passing
 
 ## Approach
-The most important part to start this task was to fetch data from Driftrock API and stub the request in tests. To achieve this, I used 'httparty' as the http service gem and 'webmock' to stub the request. By stubbing page2 as an empty page, I was able to break the loop so that webmock would not keep on asking me to stub more pages.
+The most important part to start this task was to fetch data from Driftrock API and stub the request in tests. To achieve this, I used 'httparty' as the http service gem and 'webmock' to stub the request. One of the problem I had was webmock required more pages t be stubbed. By stubbing page2 as an empty page, I was able to break the loop in fetch_all_data (api.rb) so that webmock would not ask me to stub more pages.
 
-
+I would like to separate user and purchase into two classes and add one data controller class as the user interface in the irb.
 
 Test coverage: 100%
