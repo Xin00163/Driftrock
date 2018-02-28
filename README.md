@@ -22,7 +22,7 @@ Create a script that can be run from the command line and can answer the questio
 - Run `rspec` to make sure all tests are passing
 
 ## Approach
-The most important part to start this task was to fetch data from Driftrock API and stub the request in tests. To achieve this, I used 'httparty' as the http service gem and 'webmock' to stub the request. One of the problem I had was webmock required more pages t be stubbed. By stubbing page2 as an empty page, I was able to break the loop in fetch_all_data (api.rb) so that webmock would not ask me to stub more pages.
+The most important part to start this task was to fetch data from Driftrock API and stub the request in tests. To achieve this, I used 'httparty' as the http service gem and 'webmock' to stub the request. One of the problems I had was webmock required more pages to be stubbed. By stubbing page2 as an empty page, I was able to break the loop in fetch_all_data (api.rb) so that webmock would not ask me to stub more pages.
 
 I would like to separate user and purchase into two classes and add one data controller class as the user interface in the irb.
 
