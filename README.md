@@ -6,7 +6,13 @@ Create a script that can be run from the command line and can answer the questio
 
 ## Instructions
 
-To run the app, clone this repo to your local machine and run:
+### Initial steps
+- Clone the repo
+- `cd` to the project's root directory
+- Run `gem install bundler`
+- Run `bundle install` to install all the gems
+
+### To run the app
 
 ```
 ruby app.rb COMMAND PARAMETERS
@@ -23,6 +29,13 @@ $ ruby app.rb total_spend drift.rock@email.com
 $ ruby app.rb most_loyal
 drift.rock@email.com
 ```
+
+### To test
+- Run `rspec` to make sure all tests are passing
+
 ## Approach
-Problems:
-1. 
+The most important part to start this task was to fetch data from Driftrock API and stub the request in tests. To achieve this, I used 'httparty' as the http service gem and 'webmock' to stub the request. By stubbing page2 as an empty page, I was able to break the loop so that webmock would not keep on asking me to stub more pages.
+
+
+
+Test coverage: 100%
